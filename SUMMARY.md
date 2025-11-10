@@ -1,6 +1,9 @@
 # Table of contents
 
 * [Quickstart](README.md)
+* [🔖 About](about.md)
+* [Not a SWE? Start Here](not-a-swe-start-here.md)
+* [DIY Setup Instructions](<README (1).md>)
 
 ## Role Pages
 
@@ -13,5 +16,5 @@
 ## Appendix
 
 * [Micro-Prompts](appendix/micro-prompts.md)
-* [Before->After Gallery](appendix/before-greater-than-after-gallery.md)
+* [Before->After Examples](appendix/before-greater-than-after-examples.md)
 * [Fix Weak Bullets (Gap-Finder Prompts)](appendix/fix-weak-bullets-gap-finder-prompts.md)

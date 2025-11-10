@@ -3,6 +3,7 @@ description: >-
   If your bullets still feel flat or generic, this is where to go. These prompts
   will make ChatGPT ask you questions so you can add the missing details
   recruiters care about.
+hidden: true
 ---
 
 # Fix Weak Bullets (Gap-Finder Prompts)

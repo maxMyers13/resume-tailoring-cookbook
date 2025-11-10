@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # Micro-Prompts
 
 **STAR Rewrite**
