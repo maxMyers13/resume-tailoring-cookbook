@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Quickstart](README.md)
+* [Start Here](README.md)
 * [🔖 About](about.md)
 * [Not a SWE? Start Here](not-a-swe-start-here.md)
 * [DIY Setup Instructions](<README (1).md>)
