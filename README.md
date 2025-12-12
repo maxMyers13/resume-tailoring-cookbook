@@ -2,9 +2,9 @@
 icon: play
 ---
 
-# Quickstart
+# Start Here
 
-<a href="https://chatgpt.com/g/g-p-690b22ce50d88191b98bf3e9a460697b-resume-rewrites/project" class="button primary" data-icon="arrow-up-right-from-square">Open the LiLO Resume Tailoring Project</a>
+<a href="https://chatgpt.com/g/g-692b60c8680c81919e750961d556015a-lilo-resume-tailor" class="button primary" data-icon="arrow-up-right-from-square">Open the LiLO Resume Tailoring Project</a>
 
 [Click here to start](https://chatgpt.com/g/g-p-690b22ce50d88191b98bf3e9a460697b-resume-rewrites/project)
 
