@@ -1,215 +1,369 @@
 ---
-icon: play
+description: >-
+  This doc explains the repeatable system I use to go from: idea → a working UI
+  screen using Google AI Studio, visual references, and AI-assisted prompting.
 ---
 
-# Start Here
+# Google AI Studio UI Cookbook
 
-<a href="https://chatgpt.com/g/g-692b60c8680c81919e750961d556015a-lilo-resume-tailor" class="button primary" data-icon="arrow-up-right-from-square">Open the LiLO Resume Tailoring Project</a>
-
-[Click here to start](https://chatgpt.com/g/g-p-690b22ce50d88191b98bf3e9a460697b-resume-rewrites/project)
-
-#### Step 1: Upload the Job Description
-
-{% code overflow="wrap" %}
-```markdown
-Job Description Analysis
-
-Using the context in 'how_to_tailor_your_resume.md' and 'metricdiscoveryprompt.md', extract the following information from the job description below.
-
-[Paste the full job description here]
-
-Identify and list:
-
-Must-have qualifications — essential skills, experiences, or credentials without which a candidate would not be considered.
-
-Nice-to-have qualifications — secondary or bonus skills that strengthen a candidate’s fit.
-
-Above-and-beyond or standout traits — signals of an exceptional applicant (leadership, impact scale, rare technical depth, etc.).
-
-Core responsibilities — what the role is accountable for delivering.
-
-Keywords / tools — specific terms or technologies that should be echoed in tailored resume bullets (rank these by importance).
-
-Present your findings as a Tailoring Checklist, formatted with checkboxes (☐).
-
-Before returning results, confirm that each category reflects LiLO’s definitions of must-have vs. nice-to-have (see context).
-```
-{% endcode %}
+**How I design and build UI fast using AI (the exact workflow)**\
+This is about **controlling context** so AI produces usable, production-grade UI.
 
 ***
 
-#### Step 2: Choose the Experience to Tailor
+### Core Ethos
 
-Pick 1 project or internship that fits this job:
+AI is a **context machine**, not a mind reader.
 
-{% code overflow="wrap" %}
-```prompt
-Experience Selection & Rewrite Setup
-Using the Tailoring Checklist from Step 1 and the context files how_to_rewrite_a_resume.md, metricdiscoveryprompt.md, before_greater_than_after.md, and especially star_xyz_fusion.md, help me select and rewrite one experience for this role.
+The quality of the UI you get is proportional to:
 
-Role Type: (e.g., Backend Intern — Company — Dates)
-My raw bullets / notes (paste exact text):
-(Paste exact Bullets Here) - Required
-Extra context (optional): links/specs, stack, scale, users, latency, data size, $$ impact.
+1. how clearly you know what you’re building
+2. how strong your visual references are
+3. how specific your prompt is
 
-Do this in order:
-
-Targeting plan: From the Step-1 Checklist, list the top 3–5 items this experience can credibly hit. Quote them verbatim and rank by importance.
-
-Gap queries (max 6): Ask only the smallest set of questions needed to surface missing details about scope, scale, tools, and outcomes. Use metricdiscoveryprompt.md for guidance.
-
-Rewrite (3–4 bullets):
-  • Follow the S + T → XYZ method from star_xyz_fusion.md.
-  • Make sure each bullet:
-   – Begins with a strong action verb.
-   – Contains S + T to explain why the work mattered and XYZ to show what you did and what changed.
-   – Includes a specific tool or system and one truthful metric (time saved, perf gain, users impacted, etc.).
-   – Maps to at least one Checklist item from Step 1.
-  • Avoid duplicate sentence shapes and generic phrasing (see how_to_rewrite_a_resume.md).
-
-Traceability table: Return a table with columns: Checklist Item Hit | Final Bullet | Proof (Tool/Metric) | Why It Mattered.
-
-Integrity check: Flag any metric that’s assumed or estimated as NEEDS CONFIRMATION so I can verify it.
-
-After Step 2, pause for my answers (if you asked questions) or my confirmation before continuing.
-```
-{% endcode %}
+Most failures happen because people skip one of those.
 
 ***
 
-#### Step 3: Fill in the Gaps (Q\&A)
+### High-level workflow (TL;DR)
 
-* AI will ask you targeted questions.
-* Be honest and specific. If you don’t have a metric, just describe the result qualitatively.
+1. Get clear on what you’re building (screen, goal, sections)
+2. Dictate the idea to a chatbot (speech > typing)
+3. Use the chatbot to generate **Dribbble search queries**
+4. Find a UI reference on Dribbble and screenshot it
+5. Have AI write a **Google AI Studio–optimized prompt**
+6. Generate the UI in Google AI Studio (with screenshots)
+7. Download output and integrate into the repo using your editor
 
-{% code overflow="wrap" %}
-```prompt
-Context Gap Q&A (Be Specific + Truthful)
-Using the outputs from Step 2 — your targeting plan, ranked checklist items, and the initial draft bullets — ask up to 6 targeted questions to uncover any missing context before rewriting.
-
-Ground your questions and later rewrites in these context files:
-metricdiscoveryprompt.md, star_xyz_fusion.md, and how_to_rewrite_a_resume.md.
-
-Question types to prioritize:
-
-Scope: team size, number of users affected, data volume, traffic scale, deployment environment.
-
-My role: what I personally built, designed, or owned vs. what the team handled.
-
-Tools used: specific frameworks, languages, libraries, or versions.
-
-Results: quantitative (latency, accuracy, adoption, cost/time savings) or qualitative if numbers are unknown.
-
-Constraints: security, accessibility, performance, or reliability considerations.
-
-Fabrication Rule:
-
-Never invent or infer numbers, tools, or outcomes.
-
-If data is missing, create an inline note in square brackets:
-[TO-DO: clarify X metric] or [TO-DO: add context on reliability improvements].
-
-Use these placeholders only where a fact must later be confirmed.
-
-After asking your questions and receiving my answers, regenerate 3–4 bullets following the S + T → XYZ method from star_xyz_fusion.md.
-Each bullet should include:
-
-One verified metric or qualitative descriptor (if no metric).
-
-One clear action verb + technical noun.
-
-A mapping back to at least one Step-1 checklist item.
-
-End your response with a short “Pending TO-DOs” list that summarizes any placeholders needing confirmation.
-
-If the role is technical, consult metricdiscovery_swe.md; otherwise consult metricdiscovery_general.md. Ask at most 6 questions total, then summarize metrics as Baseline→After→Δ with timeframe and source; use [TO-DO: …] for any missing confirmations.
-```
-{% endcode %}
+That’s the loop. Everything else is refinement.
 
 ***
 
-#### Step 4: Rewrite Your Bullets
+### Step 1: Know what you’re building (the hardest step)
 
-* Copy the rewrite prompt.
-* Get your improved bullets in STAR + XYZ format.
-* Paste the new ones into your resume doc.
+Before touching AI, answer these **in plain language**:
+
+* What is this screen?
+* What is the user trying to accomplish?
+* What are the main sections?
+* What data appears?
+* What happens if there’s no data?
+
+You do **not** need a full spec.\
+You need a mental picture.
+
+Bad:
+
+> “I need a clean dashboard.”
+
+Good:
+
+> “Projects overview screen that shows student progress, groups items by status, and pushes the user to start the next project.”
+
+***
+
+### Step 2: <mark style="color:$primary;">**DICTATE**</mark> the idea into a chatbot
+
+Open your chatbot of choice (ChatGPT, Claude, Gemini, Copilot, etc.).
+
+**Use dictation.**\
+Talking lets you ramble, add nuance, and capture intent more accurately than typing.
+
+<div data-full-width="true"><figure><img src=".gitbook/assets/Screenshot 2026-01-17 at 9.40.56 PM.png" alt="dictate on chatGPT"><figcaption></figcaption></figure></div>
+
+Describe:
+
+* what you’re building
+* what kind of product it is (learning platform, PWA, portfolio, etc.)
+* the vibe (playful, serious, game-like, minimal)
+* any constraints (desktop only, fast iteration, internal tool)
+
+Then ask:
+
+> “Give me Dribbble search queries to find screens like this.”
+
+***
+
+### Step 3: Find visual references on Dribbble
+
+Go to [Dribbble](https://dribbble.com/) and run the queries.
+
+When you find something good:
+
+* screenshot the screen (or parts of it)
+* optionally grab **two references**:
+  * one for layout
+  * one for components or style
+
+This screenshot is **non-negotiable**.\
+Without it, AI guesses. Guessing is how you get generic UI.
+
+***
+
+### Step 4: Let AI write the Google AI Studio prompt (AI → AI)
+
+This is the leverage point.
+
+Instead of writing the generator prompt yourself, you ask AI to do it **using your reference and constraints**.
+
+Attach the screenshot and use a meta-prompt like this:
 
 {% code overflow="wrap" %}
 ```
-Final Resume Bullet Rewrite
-Using all confirmed context from Steps 1–3 including the JD Tailoring Checklist, targeting plan, and verified Q&A responses  rewrite my selected experience into 3–4 polished bullets.
+You are an expert prompt engineer for Google AI Studio.
 
-Reference the following context files:
-star_xyz_fusion.md, how_to_rewrite_a_resume.md, and before_greater_than_after.md.
+I want you to write a single prompt that I can paste directly into Google AI Studio to generate a UI screen.
+
+Context:
+- App type: <learning platform / PWA / portfolio / etc>
+- Tech stack: Next.js (App Router), TypeScript, Tailwind, shadcn/ui
+- Output must be clean, production-ready code
+
+Goal:
+<describe what the screen should do>
+
+Visual reference:
+(Attached screenshot) Match the layout and component structure closely.
+
+Brand & styling:
+### Backgrounds
+* **Primary background:** `#020617`
+* **Secondary background:** `#0B0F18`
+* **Card / panel surface:** `#111827`
+
+### Borders
+* **Border:** `#1F2937`
+* **Subtle border:** `rgba(255,255,255,0.06)`
+
+### Accents
+* **Primary blue:** `#3B82F6`
+* **Sky blue:** `#0EA5E9`
+* **Cyan:** `#06B6D4`
+* **Teal:** `#14B8A6`
+
+### States
+* **Success green:** `#10B981`
+* **Error red:** `#EF4444`
+
+### Text
+* **Primary text:** `#FFFFFF`
+* **Secondary text:** `#94A3B8`
+* **Muted text:** `#64748B`
+
+If you want one “signature” LiLO gradient for buttons/headers:
+`linear-gradient(90deg, #3B82F6 0%, #0EA5E9 100%)`
+
+Requirements:
+- Include loading, empty, and error states
+- Use reusable components where appropriate
+- Provide a file list and full code for each file
+- Avoid external image dependencies (use placeholders)
+- Make it easy to drop into an existing repo
+
+Write ONLY the final Google AI Studio prompt.
+```
+{% endcode %}
+
+AI is unusually good at prompting other AI. Use that.
+
+***
+
+### Step 5: Generate in Google AI Studio
+
+Go to **Google AI Studio**:
+
+* paste the generated prompt
+* attach the screenshot(s)
+* run the generation
+
+You should get a solid **V0/V1 UI**.
+
+If it’s not what you want at all:
+
+* do **not** manually patch everything
+* tighten constraints and regenerate **from scractch**
+
+Iteration via regeneration is faster than hand-editing.
+
+***
+
+### Step 6: Generate an Integration Prompt (UI → Repo Translation)
+
+#### What you do:
+
+1. Take **screenshots of the generated UI**
+2. Go back to your chatbot of choice (ChatGPT, Claude, Gemini, etc.)
+3. Show it:
+   * the UI screenshots
+   * the generated file structure/code (if relevant)
+4. Ask it to write a **Cursor-optimized integration prompt**
+
+This is a second “AI writes AI instructions” step — but now the target is **Cursor**, not AI Studio.
+
+***
+
+#### Why this step matters
+
+* AI Studio is good at **generating UI**
+* Cursor is good at **editing existing repos**
+* Chatbots are good at **bridging intent between the two**
+
+You are using AI as a **translation layer**, not a blind executor.
+
+***
+
+#### Copy/paste: Cursor Integration Prompt Generator
+
+Use this prompt in ChatGPT (with screenshots attached):
+
+```
+You are helping me integrate a newly generated UI feature into an existing codebase using Cursor.
+
+Context:
+- I have just generated this UI using Google AI Studio.
+- Screenshots of the UI are attached.
+- This is a real production repository, not a sandbox.
+
+Repository structure:
+- Monorepo-style folder called "Launchpad"
+- /backend → backend service
+- /frontend → frontend app
+
+Goals:
+- Integrate the new UI cleanly
+- Follow existing patterns and conventions
+- Minimize unnecessary changes
+- Do not refactor unrelated code
 
 Instructions:
+1. Write a single, clear Cursor prompt I can paste directly into Cursor.
+2. The prompt should:
+   - Specify which files to create or modify
+   - Explain where the generated code should live
+   - Describe how to wire routing, components, and data
+   - Avoid touching files outside the frontend unless explicitly needed
+3. Assume Cursor has access only to the Launchpad directory.
 
-Follow the S + T → XYZ structure from star_xyz_fusion.md.
-
-Keep every statement truthful and verifiable.
-
-If any detail is uncertain, insert a clear placeholder in brackets, e.g. [TO-DO: confirm latency impact].
-
-Each bullet must:
-• Begin with a strong action verb.
-• Include one technical noun (tool, framework, or system).
-• Contain one metric or qualitative descriptor showing the result.
-• Map explicitly to at least one checklist item from Step 1.
-
-Use variation in sentence rhythm; avoid repetition of structure or verbs (see how_to_rewrite_a_resume.md).
-
-If all context gaps were already filled in Step 3, proceed directly with the rewrite—no further questions needed.
-
-Return:
-
-Final bullets (3–4 lines).
-
-A brief summary of alignment, which checklist items each bullet satisfies.
-
-A short “Pending TO-DOs” list, if any placeholders remain.
+Output ONLY the final Cursor prompt.
 ```
-{% endcode %}
 
 ***
 
-#### Step 5: Quality Check
+### Step 7: Controlled Integration Using Launchpad (Cursor Safety Pattern)
 
-* Run the following checks when needed:
+This is a **deliberate containment strategy**.
 
-#### Context Check
+#### Your setup
 
-_When to use:_ If someone who doesn’t know you (like a recruiter) would be confused by reading your bullets, you’ve got work to do.
+* You keep **frontend and backend repos inside a single parent folder**
+* That parent folder is called **Launchpad**
+* You open Cursor **at the Launchpad level**
+* You do NOT let Cursor operate on:
+  * your full filesystem
+  * Downloads
+  * unrelated projects
 
-{% code overflow="wrap" %}
-```prompt
-Using the S + T → XYZ method from star_xyz_fusion.md, review these bullets for clarity.
-If the Situation or Task is unclear, add a single intro line or short clause that explains why the work mattered.
-Do not change verified facts.
+***
 
-[Paste bullets here]
+#### How integration actually happens
+
+1. Download the ZIP generated by Google AI Studio
+2.  Manually drag the extracted folder into:
+
+    ```
+    Launchpad/
+      ├── backend/
+      ├── frontend/
+      └── ai-studio-output/   ← temporary
+    ```
+3. Open Cursor **from the Launchpad directory**
+4. `@mention` the generated files or folder inside Cursor
+5. Paste the **Cursor integration prompt** generated in Step 6
+6. Let Cursor integrate selectively:
+   * copy components
+   * adjust imports
+   * wire routes
+   * align types
+
+After integration, the `ai-studio-output` folder can be deleted.
+
+***
+
+#### Why this pattern is important
+
+* Limits blast radius
+* Prevents Cursor from “helpfully” touching unrelated files
+* Keeps human-in-the-loop control
+* Makes integrations auditable and reversible
+
+This is **defensive AI-assisted development**, not reckless automation.
+
+### Step 8: Download and integrate using your editor
+
+Download the output or copy the code.
+
+Then switch to your editor (Cursor, VS Code, etc.) and integrate it into the real repo.
+
+Use an integration prompt like:
+
 ```
-{% endcode %}
+Integrate this generated UI into the existing repository.
 
-#### Metrics Check
+Rules:
+- Follow existing folder structure and naming conventions
+- Do not introduce new patterns unless required
+- Ensure imports resolve cleanly
+- Make it compile on first run
 
-_When to use:_ if your bullet describes what you did but doesn’t show the impact, scale and result.
-
-{% code overflow="wrap" %}
-```prompt
-For each bullet, ensure there is one honest, verifiable measure of impact (time, scale, performance, users, revenue, etc.).
-If a metric is missing, add a placeholder note in brackets e.g. [TO-DO: measure latency reduction] — and stop.
-
-[Paste bullets here]
+Tasks:
+1. Add the screen to the correct route
+2. Wire navigation if needed
+3. Replace mock data with existing types or APIs
+4. Keep Tailwind and component patterns consistent
 ```
-{% endcode %}
 
-#### Tighten
+Google AI Studio is best at **generation**.\
+Your editor + repo context is best at **integration**.
 
-_When to use:_ if your bullets all start to sound the same or rely on buzzwords instead of proof.
+***
 
-{% code overflow="wrap" %}
-```prompt
-Tighten these bullets. Remove filler, repeat nouns sparingly, keep one metric per bullet, make verbs concrete.
-[Paste bullets]
-```
-{% endcode %}
+### Color systems matter more than people think
+
+If you don’t specify colors:
+
+* AI invents them
+* your app drifts visually
+* everything feels inconsistent
+
+Always keep a **copy-paste color block** ready and include it in prompts.
+
+***
+
+### Why this system works
+
+* Visual references anchor layout decisions
+* Dictation captures intent better than typed prompts
+* AI-generated prompts are more generator-friendly
+* Regeneration replaces manual cleanup
+* Clear separation between generation and integration
+
+This is not magic. It’s controlled input.
+
+***
+
+### Team standard (recommended)
+
+Any time someone uses AI Studio to build a screen:
+
+* save the prompt
+* save the reference screenshot
+* link the final result or PR
+
+Over time, this becomes a **prompt library**:
+
+* dashboard recipe
+* onboarding flow recipe
+* PWA settings recipe
+* portfolio landing recipe
+
+That’s how individual speed turns into team velocity.
